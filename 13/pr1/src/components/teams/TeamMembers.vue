@@ -46,8 +46,13 @@ export default {
       this.teamName = selectedTeam.name;
     },
   },
+  beforeRouteUpdate(to, from, next) {
+    console.log('TeamMembers cmp beforeRouteUpdate');
+    // this.loadTeamMembers(to.params.teamId);
+    next();
+  },
   watch: {
-    teamId(newValue) {
+    teamId(newValue) { // следит за изменением свойства teamId
       this.loadTeamMembers(newValue);
     },
   },
