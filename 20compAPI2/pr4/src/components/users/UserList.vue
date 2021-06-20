@@ -26,10 +26,11 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue';
+import { toRefs } from 'vue';
 
 import UserItem from './UserItem.vue';
 import useSearch from '../../hooks/search';
+import useSorting from '../../hooks/sorting';
 
 export default {
   components: {
@@ -38,60 +39,36 @@ export default {
   props: ['users'],
   emits: ['list-projects'],
   setup(props) {
-    // const enteredSearchTerm = ref('');
-    // const activeSearchTerm = ref('');
-
-    // const availableUsers = computed(function () {
-    //   let users = [];
-    //   if (activeSearchTerm.value) {
-    //     users = props.users.filter((usr) =>
-    //       usr.fullName.includes(activeSearchTerm.value)
-    //     );
-    //   } else if (props.users) {
-    //     users = props.users;
-    //   }
-    //   return users;
-    // });
-
-    // watch(enteredSearchTerm, function (newValue) {
-    //   setTimeout(() => {
-    //     if (newValue === enteredSearchTerm.value) {
-    //       activeSearchTerm.value = newValue;
-    //     }
-    //   }, 300);
-    // });
-
-    // function updateSearch(val) {
-    //   enteredSearchTerm.value = val;
-    // }
+    const { users } = toRefs(props);
 
     const { enteredSearchTerm, availableItems, updateSearch } = useSearch(
-      props.users,
+      users,
       'fullName'
     );
 
-    const sorting = ref(null);
-    const displayedUsers = computed(function () {
-      if (!sorting.value) {
-        return availableItems.value;
-      }
-      return availableItems.value.slice().sort((u1, u2) => {
-        if (sorting.value === 'asc' && u1.fullName > u2.fullName) {
-          return 1;
-        } else if (sorting.value === 'asc') {
-          return -1;
-        } else if (sorting.value === 'desc' && u1.fullName > u2.fullName) {
-          return -1;
-        } else {
-          return 1;
-        }
-      });
-    });
+    // const sorting = ref(null);
+    // const displayedUsers = computed(function () {
+    //   if (!sorting.value) {
+    //     return availableItems.value;
+    //   }
+    //   return availableItems.value.slice().sort((u1, u2) => {
+    //     if (sorting.value === 'asc' && u1.fullName > u2.fullName) {
+    //       return 1;
+    //     } else if (sorting.value === 'asc') {
+    //       return -1;
+    //     } else if (sorting.value === 'desc' && u1.fullName > u2.fullName) {
+    //       return -1;
+    //     } else {
+    //       return 1;
+    //     }
+    //   });
+    // });
 
-    function sort(mode) {
-      sorting.value = mode;
-    }
+    // function sort(mode) {
+    //   sorting.value = mode;
+    // }
 
+    const { displayedUsers, sorting, sort } = useSorting(availableItems, 'fullName');
     return {
       enteredSearchTerm,
       updateSearch,
@@ -100,59 +77,6 @@ export default {
       sort,
     };
   },
-  // data() {
-  //   return {
-  //     enteredSearchTerm: '',
-  //     activeSearchTerm: '',
-  //     sorting: null,
-  //   };
-  // },
-  // computed: {
-  //   availableUsers() {
-  //     let users = [];
-  //     if (this.activeSearchTerm) {
-  //       users = this.users.filter((usr) =>
-  //         usr.fullName.includes(this.activeSearchTerm)
-  //       );
-  //     } else if (this.users) {
-  //       users = this.users;
-  //     }
-  //     return users;
-  //   },
-  //   displayedUsers() {
-  //     if (!this.sorting) {
-  //       return this.availableUsers;
-  //     }
-  //     return this.availableUsers.slice().sort((u1, u2) => {
-  //       if (this.sorting === 'asc' && u1.fullName > u2.fullName) {
-  //         return 1;
-  //       } else if (this.sorting === 'asc') {
-  //         return -1;
-  //       } else if (this.sorting === 'desc' && u1.fullName > u2.fullName) {
-  //         return -1;
-  //       } else {
-  //         return 1;
-  //       }
-  //     });
-  //   },
-  // },
-  // methods: {
-  //   updateSearch(val) {
-  //     this.enteredSearchTerm = val;
-  //   },
-  //   sort(mode) {
-  //     this.sorting = mode;
-  //   },
-  // },
-  // watch: {
-  //   enteredSearchTerm(val) {
-  //     setTimeout(() => {
-  //       if (val === this.enteredSearchTerm) {
-  //         this.activeSearchTerm = val;
-  //       }
-  //     }, 300);
-  //   }
-  // },
 };
 </script>
 
