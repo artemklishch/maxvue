@@ -17,13 +17,13 @@ export default {
       name: 'Maximilian',
       age: 32
     });
-    console.log(uAge, user);
-    console.log(uAge.value);
-    console.log(user.name, user.age);
-    console.log(isRef(uAge.value));
-    console.log(isReactive(user.name), user.age);
-    console.log(isRef(uAge));
-    console.log(isReactive(user));
+    console.log('uAge, user', uAge, user);
+    console.log('uAge.value', uAge.value);
+    console.log('user.name, user.age', user.name, user.age);
+    console.log('isRef(uAge.value)', isRef(uAge.value)); // false
+    console.log('isReactive(user.name), user.age', isReactive(user.name), user.age); // false
+    console.log('isRef(uAge)', isRef(uAge)); // true
+    console.log('isReactive(user)', isReactive(user)); // true
     // isRef, isReactive - проверяют на реактивность аргумент
     setTimeout(function() {
       user.name = 'Bob';
